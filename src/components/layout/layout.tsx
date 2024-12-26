@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
-import Header from "../shared/header";
+import Header from "@components/shared/header";
 
 
 const Layout = () => {
   return (
-    <div>
+    <div className="h-screen flex flex-col">
         <Header/>
         <Outlet/>
     </div>
