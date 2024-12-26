@@ -27,7 +27,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@hooks/*": ["hooks/*"]
+      "@hooks/*": ["hooks/*"],
+      "@configs": ["config.ts"]
     }
   },
   "include": ["src"]
