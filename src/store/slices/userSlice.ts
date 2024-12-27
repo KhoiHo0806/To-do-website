@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 interface UserInfo {
   email: string;
@@ -10,30 +11,25 @@ interface UserInfo {
   refreshToken: string;
   username: string;
 }
-export interface UserState {
-  accessToken: string | null;
+interface UserState {
   userInfo: UserInfo | null;
 }
 
+const authData = localStorage.getItem("authData");
+
 const initialState: UserState = {
-  accessToken: null,
-  userInfo: null,
+  userInfo: authData ? JSON.parse(authData).user : null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser(
-      state,
-      action: PayloadAction<{ accessToken: string; userInfo: UserInfo }>,
-    ) {
-      state.accessToken = action.payload.accessToken;
+    setUser(state, action: PayloadAction<{ userInfo: UserInfo }>) {
       state.userInfo = action.payload.userInfo;
     },
 
     clearUser(state) {
-      state.accessToken = null;
       state.userInfo = null;
     },
   },

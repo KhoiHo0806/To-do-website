@@ -2,16 +2,24 @@ import "./header.css";
 import { IMG_PATHS } from "@configs";
 import { clearUser } from "@store/slices/userSlice";
 import { RootState } from "@store/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const token = useSelector((state: RootState) => state.user.accessToken);
+  const authData = localStorage.getItem("authData");
+  const token = authData ? JSON.parse(authData).token : null;
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
+    const logoutData = {
+      token: null,
+      user: null,
+    };
+    localStorage.setItem("authData", JSON.stringify(logoutData));
     dispatch(clearUser());
+    alert("log out successfully!");
   };
 
   return (

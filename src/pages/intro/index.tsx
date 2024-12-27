@@ -1,7 +1,18 @@
 import "./intro.css";
 import { IMG_PATHS } from "@configs";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Intro = () => {
+  const navigate = useNavigate();
+  const authData = localStorage.getItem("authData");
+  const token = authData ? JSON.parse(authData).token : null;
+
+  useEffect(() => {
+    if (token) {
+      navigate("/todo");
+    }
+  });
   return (
     <div className="flex flex-1 justify-center items-center">
       <h1 className="flex gap-2 items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-500">

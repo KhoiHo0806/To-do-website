@@ -9,8 +9,8 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,13 +25,17 @@ const LoginForm = () => {
       });
       if (response) {
         const { accessToken, ...userInfo } = response.data;
-        dispatch(setUser({ accessToken, userInfo }));
+        const data = {
+          token: accessToken,
+          user: userInfo,
+        };
+        localStorage.setItem("authData", JSON.stringify(data));
+        dispatch(setUser({ userInfo: data.user }));
         alert("Login success");
         navigate("/todo");
       }
-    } catch (err) {
+    } catch {
       setError("Wrong user name or password");
-      console.log("error:" + err);
     }
   };
 
