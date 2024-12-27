@@ -13,6 +13,8 @@ const Todo = () => {
     "Task 9",
     "Task 10",
   ];
+
+  console.log("To so is rendered!");
   return (
     <div className="flex flex-col gap-2 px-2 lg:px-64 md:px-40 sm:px-24 py-4 sm:py-12 md:py-16">
       <div className="flex justify-end mt-6">

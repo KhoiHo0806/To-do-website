@@ -19,6 +19,22 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
 
           {/* Private Routes */}
+          {/* <Route
+            path="/todo"
+            element={
+              <PrivateRoutes>
+                <Todo />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/createTodo"
+            element={
+              <PrivateRoutes>
+                <CreateTodo />
+              </PrivateRoutes>
+            }
+          /> */}
           <Route element={<PrivateRoutes />}>
             <Route path="/todo" element={<Todo />} />
             <Route path="/createTodo" element={<CreateTodo />} />

@@ -1,16 +1,27 @@
 import { setUser } from "@store/slices/userSlice";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Loader from "@components/loader";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const authData = localStorage.getItem("authData");
+  const token = authData ? JSON.parse(authData).token : null;
+
+  useEffect(() => {
+    if (token) {
+      navigate("/todo");
+    }
+  });
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,6 +29,8 @@ const LoginForm = () => {
       setError("Please fill in both fields.");
       return;
     }
+
+    setLoading(true);
     try {
       const response = await axios.post("https://dummyjson.com/auth/login", {
         username: username,
@@ -36,6 +49,8 @@ const LoginForm = () => {
       }
     } catch {
       setError("Wrong user name or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,6 +63,7 @@ const LoginForm = () => {
 
         {/* Predefined credentials with Copy buttons */}
         <div className="mb-4">
+          {loading && <Loader/>}
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-500">
               Username: <strong>emilys</strong>
