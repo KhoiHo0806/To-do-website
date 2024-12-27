@@ -1,11 +1,16 @@
+import { setUser } from "@store/slices/userSlice";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,26 +19,22 @@ const LoginForm = () => {
       return;
     }
     try {
-      
       const response = await axios.post("https://dummyjson.com/auth/login", {
         username: username,
         password: password,
       });
-      setUser(response.data);
       if (response) {
+        const { accessToken, ...userInfo } = response.data;
+        dispatch(setUser({ accessToken, userInfo }));
         alert("Login success");
+        navigate("/todo");
       }
     } catch (err) {
       setError("Wrong user name or password");
       console.log("error:" + err);
     }
   };
-  useEffect(() => {
-    if (user) {
-      console.log("Updated user:", user);
-      // Additional actions can go here
-    }
-  }, [user]);
+
   return (
     <div className="flex flex-1 items-center justify-center bg-gray-50">
       <div className="bg-white shadow-md rounded-md p-6 w-full max-w-sm">

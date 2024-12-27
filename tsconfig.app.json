@@ -28,7 +28,8 @@
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@hooks/*": ["hooks/*"],
-      "@configs": ["config.ts"]
+      "@configs": ["config.ts"],
+      "@store/*": ["store/*"]
     }
   },
   "include": ["src"]
