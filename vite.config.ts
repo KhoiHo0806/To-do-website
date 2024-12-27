@@ -18,6 +18,7 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "./src/pages"),
       "@configs": path.resolve(__dirname, "./src/config.ts"),
       "@store": path.resolve(__dirname, "./src/store"),
+      "@protected": path.resolve(__dirname, "./src/protected"),
     },
   },
 });

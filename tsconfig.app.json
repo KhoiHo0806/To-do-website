@@ -29,7 +29,8 @@
       "@pages/*": ["pages/*"],
       "@hooks/*": ["hooks/*"],
       "@configs": ["config.ts"],
-      "@store/*": ["store/*"]
+      "@store/*": ["store/*"],
+      "@protected/*": ["protected/*"]
     }
   },
   "include": ["src"]
