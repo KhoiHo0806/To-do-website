@@ -1,40 +1,80 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const LoginForm = ({}) => {
-  const [email, setEmail] = useState("");
+const LoginForm = () => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
 
   const loginHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("login works")
+    if (username === "" || password === "") {
+      setError("Please fill in both fields.");
+      return;
+    }
     try {
+      
       const response = await axios.post("https://dummyjson.com/auth/login", {
-        usename: email,
+        username: username,
         password: password,
       });
-      console.log("response: " + response);
       setUser(response.data);
+      if (response) {
+        alert("Login success");
+      }
     } catch (err) {
-      setError(error);
-      console.log("error:" +error);
+      setError("Wrong user name or password");
+      console.log("error:" + err);
     }
   };
+  useEffect(() => {
+    if (user) {
+      console.log("Updated user:", user);
+      // Additional actions can go here
+    }
+  }, [user]);
   return (
     <div className="flex flex-1 items-center justify-center bg-gray-50">
       <div className="bg-white shadow-md rounded-md p-6 w-full max-w-sm">
         <h1 className="text-2xl font-bold text-center mb-4 text-gray-700">
           Login
         </h1>
+
+        {/* Predefined credentials with Copy buttons */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-500">
+              Username: <strong>emilys</strong>
+            </span>
+            <button
+              onClick={() => navigator.clipboard.writeText("emilys")}
+              className="text-blue-600 hover:text-blue-800 text-xs"
+            >
+              Copy
+            </button>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-500">
+              Password: <strong>emilyspass</strong>
+            </span>
+            <button
+              onClick={() => navigator.clipboard.writeText("emilyspass")}
+              className="text-blue-600 hover:text-blue-800 text-xs"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        {/* Login Form */}
         <form onSubmit={loginHandler} className="space-y-4">
           <div>
             <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              type="email"
-              placeholder="Email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              placeholder="User name"
               className="block w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -53,7 +93,7 @@ const LoginForm = ({}) => {
           >
             Login
           </button>
-          {error && <p>{error}</p>}
+          {error && <p className="text-red-500">{error}</p>}
         </form>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import "./intro.css";
 import { IMG_PATHS } from "@configs";
 
-const Intro = ({}) => {
+const Intro = () => {
   return (
     <div className="flex flex-1 justify-center items-center">
       <h1 className="flex gap-2 items-center justify-center text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-emerald-500">
