@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 interface UserInfo {
   email: string;
@@ -27,6 +28,10 @@ const userSlice = createSlice({
   reducers: {
     setUser(state, action: PayloadAction<{ userInfo: UserInfo }>) {
       state.userInfo = action.payload.userInfo;
+      toast(`Welcome back!, ${state.userInfo.username}`, {
+        duration: 1500,
+        className: "bg-cyan-500 text-white p-4 rounded-md shadow-lg",
+      });
     },
 
     clearUser(state) {

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 export interface TodoItemState {
   id: string;
@@ -20,6 +21,10 @@ const todoListSlice = createSlice({
   reducers: {
     addItem(state, action: PayloadAction<{ todoItem: TodoItemState }>) {
       state.todoList.push(action.payload.todoItem);
+      toast.success("Item added!", {
+        duration: 1500,
+        className: "bg-cyan-500 text-white p-4 rounded-md shadow-lg",
+      });
     },
 
     removeItem(state, action: PayloadAction<{ todoItem: TodoItemState }>) {
@@ -29,6 +34,10 @@ const todoListSlice = createSlice({
       if (index !== -1) {
         state.todoList.splice(index, 1);
       }
+      toast("Item deleted!", {
+        duration: 1500,
+        className: "bg-red-500 text-white p-4 rounded-md shadow-lg",
+      });
     },
 
     updateTodoItem(state, action: PayloadAction<{ todoItem: TodoItemState }>) {

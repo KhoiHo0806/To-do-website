@@ -44,7 +44,6 @@ const LoginForm = () => {
         };
         localStorage.setItem("authData", JSON.stringify(data));
         dispatch(setUser({ userInfo: data.user }));
-        alert("Login success");
         navigate("/todo");
       }
     } catch {

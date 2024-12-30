@@ -40,7 +40,6 @@ const CreateTodo = () => {
     localStorage.setItem("todoItemList", JSON.stringify(todoListLocalStorage));
     dispatch(addItem({ todoItem }));
     navigate("/todo");
-    alert("Item added!");
   };
 
   return (

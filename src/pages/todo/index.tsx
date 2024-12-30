@@ -4,7 +4,7 @@ import { RootState } from "@store/store";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 const Todo = () => {
   const todoList = useSelector((state: RootState) => state.todoList.todoList);
@@ -33,7 +33,7 @@ const Todo = () => {
           onClick={() => {
             toast.dismiss();
             const updatedList = parsedTodoListLocalStorage.filter(
-              (todoItem: TodoItemState) => todoItem.id !== item.id
+              (todoItem: TodoItemState) => todoItem.id !== item.id,
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
             dispatch(removeItem({ todoItem: item }));
@@ -59,7 +59,7 @@ const Todo = () => {
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem
+        todoItem.id === updateItem.id ? updateItem : todoItem,
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -74,14 +74,14 @@ const Todo = () => {
     const updatedItem = { ...item, description: newDescription };
     updateTodoListHandler(updatedItem);
     setEditTingItemID(null);
-    toast.success("item saved", {
+    toast.success("Item saved", {
       duration: 1500,
       className: "bg-cyan-500 text-white p-4 rounded-md shadow-lg",
     });
   };
   const handleKeyDown = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>
+    event: React.KeyboardEvent<HTMLSpanElement>,
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
@@ -159,7 +159,6 @@ const Todo = () => {
           </p>
         )}
       </div>
-      <Toaster position="top-center" />
     </div>
   );
 };

@@ -19,7 +19,6 @@ const Header = () => {
     };
     localStorage.setItem("authData", JSON.stringify(logoutData));
     dispatch(clearUser());
-    alert("log out successfully!");
   };
 
   return (
