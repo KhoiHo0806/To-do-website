@@ -4,6 +4,7 @@ import { RootState } from "@store/store";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { Toaster, toast } from "sonner";
 
 const Todo = () => {
   const todoList = useSelector((state: RootState) => state.todoList.todoList);
@@ -50,6 +51,10 @@ const Todo = () => {
     const updatedItem = { ...item, description: newDescription };
     updateTodoListHandler(updatedItem);
     setEditTingItemID(null);
+    toast.success("item saved",{
+      duration:1000,
+      className:'bg-cyan-500 text-white p-4 rounded-md shadow-lg'
+    })
   };
   const handleKeyDown = (
     item: TodoItemState,
@@ -111,7 +116,7 @@ const Todo = () => {
                 <div className="flex gap-2 sm:mt-3 sm:w-full sm:justify-start">
                   <button
                     onClick={() => setEditTingItemID(item.id)}
-                    className="px-3 py-1 text-sm text-white bg-blue-500 rounded hover:bg-blue-600 focus:ring focus:ring-blue-300"
+                    className="px-3 py-1 text-sm text-white bg-cyan-500 rounded hover:bg-blue-600 focus:ring focus:ring-blue-300"
                   >
                     Edit
                   </button>
@@ -131,6 +136,7 @@ const Todo = () => {
           </p>
         )}
       </div>
+      <Toaster position="top-center"/>
     </div>
   );
 };
