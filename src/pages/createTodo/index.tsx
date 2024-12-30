@@ -1,9 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
+import { TodoItemState } from "@store/slices/todoListSlice";
+import { addItem } from "@store/slices/todoListSlice";
 import { useState } from "react";
-import { todoItemState } from "@store/slices/todoListSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addItem } from "@store/slices/todoListSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const CreateTodo = () => {
   const [description, setDescription] = useState<string>("");
@@ -15,7 +15,7 @@ const CreateTodo = () => {
   const existingList = localStorage.getItem("todoItemList");
   const todoListLocalStorage = existingList ? JSON.parse(existingList) : [];
 
-  function generateUniqueId(todoList: todoItemState[]): string {
+  function generateUniqueId(todoList: TodoItemState[]): string {
     console.log("todoList test :", todoList);
     let id = uuidv4();
     // Check if the generated ID exists in the todoList

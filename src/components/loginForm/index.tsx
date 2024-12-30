@@ -1,9 +1,9 @@
+import Loader from "@components/loader";
 import { setUser } from "@store/slices/userSlice";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Loader from "@components/loader";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -63,7 +63,7 @@ const LoginForm = () => {
 
         {/* Predefined credentials with Copy buttons */}
         <div className="mb-4">
-          {loading && <Loader/>}
+          {loading && <Loader />}
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-gray-500">
               Username: <strong>emilys</strong>

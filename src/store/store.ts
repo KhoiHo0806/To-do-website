@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import todoListReducer from "./slices/todoListSlice";
 import userReducer from "./slices/userSlice";
-import todoListReducer from "./slices/todoListSlice"
 
 const store = configureStore({
   reducer: {
     user: userReducer,
-    todoList: todoListReducer
+    todoList: todoListReducer,
   },
 });
 
