@@ -26,17 +26,40 @@ const Todo = () => {
   }, [editTingItemID]);
 
   const removeItemHandler = (item: TodoItemState) => {
-    const updatedList = parsedTodoListLocalStorage.filter(
-      (todoItem: TodoItemState) => todoItem.id !== item.id,
-    );
-    localStorage.setItem("todoItemList", JSON.stringify(updatedList));
-    dispatch(removeItem({ todoItem: item }));
+    toast("Are you sure?", {
+      duration: Infinity,
+      action: (
+        <button
+          onClick={() => {
+            toast.dismiss();
+            const updatedList = parsedTodoListLocalStorage.filter(
+              (todoItem: TodoItemState) => todoItem.id !== item.id
+            );
+            localStorage.setItem("todoItemList", JSON.stringify(updatedList));
+            dispatch(removeItem({ todoItem: item }));
+          }}
+          className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
+        >
+          Confirm
+        </button>
+      ),
+      cancel: (
+        <button
+          onClick={() => {
+            toast.dismiss();
+          }}
+          className="px-3 py-1 text-white bg-cyan-500 rounded hover:bg-cyan-600 focus:ring focus:ring-gray-300"
+        >
+          Cancel
+        </button>
+      ),
+    });
   };
 
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem,
+        todoItem.id === updateItem.id ? updateItem : todoItem
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -51,14 +74,14 @@ const Todo = () => {
     const updatedItem = { ...item, description: newDescription };
     updateTodoListHandler(updatedItem);
     setEditTingItemID(null);
-    toast.success("item saved",{
-      duration:1000,
-      className:'bg-cyan-500 text-white p-4 rounded-md shadow-lg'
-    })
+    toast.success("item saved", {
+      duration: 1500,
+      className: "bg-cyan-500 text-white p-4 rounded-md shadow-lg",
+    });
   };
   const handleKeyDown = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>,
+    event: React.KeyboardEvent<HTMLSpanElement>
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
@@ -136,7 +159,7 @@ const Todo = () => {
           </p>
         )}
       </div>
-      <Toaster position="top-center"/>
+      <Toaster position="top-center" />
     </div>
   );
 };
