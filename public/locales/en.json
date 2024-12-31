@@ -3,16 +3,23 @@
     "welcomeText": "Welcome back!",
     "logoutText": "Logged out successfully",
     "itemAdded": "Item Added",
-    "itemDeleted": "Item Deleted"
+    "itemDeleted": "Item Deleted",
+    "itemSaved": "itemSaved"
   },
   "button": {
     "login": "Login",
     "logout": "Logout",
-    "addTodo": "Add Todo"
+    "addTodo": "Add Todo",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   },
   "label": {
     "createItem": "Create Todo Item",
     "itemDescription": "Item Description",
-    "enterTodoItem": "Enter your to do item"
+    "enterTodoItem": "Enter your to do item",
+    "letAddSomeTodo": "Let's add some to do",
+    "areYouSure" : "Are you sure?"
   }
 }

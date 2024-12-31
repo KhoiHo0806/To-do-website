@@ -3,16 +3,23 @@
     "welcomeText": "Chào mừng trở lại!",
     "logoutText": "Đăng xuất thành công",
     "itemAdded": "Đã thêm mục",
-    "itemDeleted": "Đã xóa mục"
+    "itemDeleted": "Đã xóa mục",
+    "itemSaved": "Đã lưu mục"
   },
   "button": {
     "login": "Đăng nhập",
     "logout": "Đăng xuất",
-    "addTodo": "Thêm Todo"
+    "addTodo": "Thêm Todo",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy bỏ"
   },
   "label": {
     "createItem": "Tạo mục Todo",
     "itemDescription": "Mô tả mục",
-    "enterTodoItem": "Nhập mục cần làm của bạn"
+    "enterTodoItem": "Nhập mục cần làm của bạn",
+    "letAddSomeTodo": "Hãy thêm một vài mục cần làm",
+    "areYouSure": "Bạn có chắc không?"
   }
 }

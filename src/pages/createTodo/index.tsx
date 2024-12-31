@@ -1,10 +1,10 @@
 import { TodoItemState } from "@store/slices/todoListSlice";
 import { addItem } from "@store/slices/todoListSlice";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { useTranslation } from "react-i18next";
 
 const CreateTodo = () => {
   const [description, setDescription] = useState<string>("");
@@ -12,7 +12,7 @@ const CreateTodo = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const existingList = localStorage.getItem("todoItemList");
   const todoListLocalStorage = existingList ? JSON.parse(existingList) : [];
@@ -61,7 +61,7 @@ const CreateTodo = () => {
               type="text"
               id="description"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your todo item"
+              placeholder={t("label.enterTodoItem")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

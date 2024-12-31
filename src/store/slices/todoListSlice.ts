@@ -19,7 +19,10 @@ const todoListSlice = createSlice({
   name: "todoList",
   initialState,
   reducers: {
-    addItem(state, action: PayloadAction<{ todoItem: TodoItemState, message:string }>) {
+    addItem(
+      state,
+      action: PayloadAction<{ todoItem: TodoItemState; message: string }>,
+    ) {
       state.todoList.push(action.payload.todoItem);
       toast.success(action.payload.message, {
         duration: 1500,
@@ -27,7 +30,10 @@ const todoListSlice = createSlice({
       });
     },
 
-    removeItem(state, action: PayloadAction<{ todoItem: TodoItemState, message:string }>) {
+    removeItem(
+      state,
+      action: PayloadAction<{ todoItem: TodoItemState; message: string }>,
+    ) {
       const index = state.todoList.findIndex(
         (item) => item.id === action.payload.todoItem.id,
       );

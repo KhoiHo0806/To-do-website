@@ -61,6 +61,7 @@ const LanguageSelector: React.FC = () => {
       {/* Desktop Dropdown */}
       <div className="hidden sm:block">
         <select
+          value={i18n.language}
           onChange={(e) => changeLanguage(e.target.value)}
           className="border p-2 rounded-md"
         >

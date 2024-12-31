@@ -2,6 +2,7 @@ import { removeItem, updateTodoItem } from "@store/slices/todoListSlice";
 import { TodoItemState } from "@store/slices/todoListSlice";
 import { RootState } from "@store/store";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
@@ -14,6 +15,7 @@ const Todo = () => {
     : [];
 
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
 
@@ -26,7 +28,7 @@ const Todo = () => {
   }, [editTingItemID]);
 
   const removeItemHandler = (item: TodoItemState) => {
-    toast("Are you sure?", {
+    toast(t("label.areYouSure"), {
       duration: Infinity,
       action: (
         <button
@@ -36,11 +38,13 @@ const Todo = () => {
               (todoItem: TodoItemState) => todoItem.id !== item.id,
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
-            dispatch(removeItem({ todoItem: item }));
+            dispatch(
+              removeItem({ todoItem: item, message: t("alert.itemDeleted") }),
+            );
           }}
           className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
         >
-          Confirm
+         {t("button.confirm")}
         </button>
       ),
       cancel: (
@@ -50,7 +54,7 @@ const Todo = () => {
           }}
           className="px-3 py-1 text-white bg-cyan-500 rounded hover:bg-cyan-600 focus:ring focus:ring-gray-300"
         >
-          Cancel
+          {t("button.cancel")}
         </button>
       ),
     });
@@ -74,7 +78,7 @@ const Todo = () => {
     const updatedItem = { ...item, description: newDescription };
     updateTodoListHandler(updatedItem);
     setEditTingItemID(null);
-    toast.success("Item saved", {
+    toast.success(t("alert.itemSaved"), {
       duration: 1500,
       className: "bg-cyan-500 text-white p-4 rounded-md shadow-lg",
     });
@@ -95,7 +99,7 @@ const Todo = () => {
       <div className="flex justify-end mt-6">
         <Link to="/createTodo">
           <button className="px-4 py-2 text-white bg-cyan-500 rounded-lg shadow hover:bg-cyan-600 focus:ring focus:ring-cyan-300 transition-colors duration-300">
-            Add More Todo
+            {t("button.addTodo")}
           </button>
         </Link>
       </div>
@@ -141,13 +145,13 @@ const Todo = () => {
                     onClick={() => setEditTingItemID(item.id)}
                     className="px-3 py-1 text-sm text-white bg-cyan-500 rounded hover:bg-blue-600 focus:ring focus:ring-blue-300"
                   >
-                    Edit
+                    {t("button.edit")}
                   </button>
                   <button
                     onClick={() => removeItemHandler(item)}
                     className="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
                   >
-                    Delete
+                    {t("button.delete")}
                   </button>
                 </div>
               </div>
@@ -155,7 +159,7 @@ const Todo = () => {
           })
         ) : (
           <p className="text-cyan-500 flex items-center justify-center">
-            Let's add some todos
+            {t("label.letAddSomeTodo")}
           </p>
         )}
       </div>

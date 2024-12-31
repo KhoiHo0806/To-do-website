@@ -3,16 +3,23 @@
     "welcomeText": "Bon retour!",
     "logoutText": "Déconnexion réussie",
     "itemAdded": "Élément ajouté",
-    "itemDeleted": "Élément supprimé"
+    "itemDeleted": "Élément supprimé",
+    "itemSaved": "Élément enregistré"
   },
   "button": {
     "login": "Connexion",
     "logout": "Déconnexion",
-    "addTodo": "Ajouter Todo"
+    "addTodo": "Ajouter Todo",
+    "edit": "Éditer",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
   },
   "label": {
     "createItem": "Créer un élément Todo",
     "itemDescription": "Description de l'élément",
-    "enterTodoItem": "Entrez votre tâche à faire"
+    "enterTodoItem": "Entrez votre tâche à faire",
+    "letAddSomeTodo": "Ajoutons quelques tâches",
+    "areYouSure": "Êtes-vous sûr?"
   }
 }
