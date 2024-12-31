@@ -2,9 +2,9 @@ import Loader from "@components/loader";
 import { setUser } from "@store/slices/userSlice";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -45,8 +45,10 @@ const LoginForm = () => {
           user: userInfo,
         };
         localStorage.setItem("authData", JSON.stringify(data));
-        const welcomeMessage = `${t("welcomeText")}, ${userInfo.username}`;
-        dispatch(setUser({ userInfo: data.user, welcomeMessage}));
+       
+          const welcomeMessage = `${t("alert.welcomeText")}, ${userInfo.username}`;
+          dispatch(setUser({ userInfo: data.user, welcomeMessage }));
+
         navigate("/todo");
       }
     } catch {
