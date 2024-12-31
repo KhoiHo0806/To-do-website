@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +14,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const authData = localStorage.getItem("authData");
   const token = authData ? JSON.parse(authData).token : null;
@@ -43,7 +45,8 @@ const LoginForm = () => {
           user: userInfo,
         };
         localStorage.setItem("authData", JSON.stringify(data));
-        dispatch(setUser({ userInfo: data.user }));
+        const welcomeMessage = `${t("welcomeText")}, ${userInfo.username}`;
+        dispatch(setUser({ userInfo: data.user, welcomeMessage}));
         navigate("/todo");
       }
     } catch {

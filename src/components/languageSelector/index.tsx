@@ -49,7 +49,6 @@ const LanguageSelector: React.FC = () => {
           >
             Français
           </button>
-          {/* Add more language options here */}
         </div>
       )}
 
@@ -61,7 +60,6 @@ const LanguageSelector: React.FC = () => {
         >
           <option value="en">English</option>
           <option value="fr">Français</option>
-          {/* Add more language options here */}
         </select>
       </div>
     </div>

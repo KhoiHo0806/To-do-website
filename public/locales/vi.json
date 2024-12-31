@@ -1,0 +1,6 @@
+{
+  "alert": {
+    "welcomeText": "Chào mừng bạn trở lại!",
+    "logoutText": "Đăng xuất thành công"
+  }
+}

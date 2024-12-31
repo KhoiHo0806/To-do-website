@@ -1,0 +1,6 @@
+{
+  "alert": {
+    "welcomeText": "Bienvenue de nouveau !",
+    "logoutText": "Déconnexion réussie"
+  }
+}
