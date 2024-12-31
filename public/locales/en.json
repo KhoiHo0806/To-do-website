@@ -1,0 +1,18 @@
+{
+  "alert": {
+    "welcomeText": "Welcome back!",
+    "logoutText": "Logged out successfully",
+    "itemAdded": "Item Added",
+    "itemDeleted": "Item Deleted"
+  },
+  "button": {
+    "login": "Login",
+    "logout": "Logout",
+    "addTodo": "Add Todo"
+  },
+  "label": {
+    "createItem": "Create Todo Item",
+    "itemDescription": "Item Description",
+    "enterTodoItem": "Enter your to do item"
+  }
+}

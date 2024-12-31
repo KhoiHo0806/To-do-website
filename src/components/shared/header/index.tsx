@@ -3,6 +3,7 @@ import LanguageSelector from "@components/languageSelector";
 import { IMG_PATHS } from "@configs";
 import { clearUser } from "@store/slices/userSlice";
 import { RootState } from "@store/store";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
   const token = authData ? JSON.parse(authData).token : null;
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     const logoutData = {
@@ -49,13 +51,13 @@ const Header: React.FC = () => {
               onClick={handleLogout}
               className="bg-red-500 text-white rounded-lg px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base hover:bg-red-600 transition-colors duration-300"
             >
-              Logout
+              {t("button.logout")}
             </button>
           </>
         ) : (
           <Link to="./login">
             <button className="border-2 rounded-xl border-cyan-400 text-cyan-600 hover:bg-cyan-400 hover:text-white text-xs sm:text-sm lg:text-base px-3 sm:px-4 py-1 sm:py-2 transition-colors duration-400">
-              Login
+              {t("button.login")}
             </button>
           </Link>
         )}

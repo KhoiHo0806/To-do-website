@@ -49,6 +49,12 @@ const LanguageSelector: React.FC = () => {
           >
             Français
           </button>
+          <button
+            onClick={() => changeLanguage("vi")}
+            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+          >
+            Tiếng Việt
+          </button>
         </div>
       )}
 
@@ -60,6 +66,7 @@ const LanguageSelector: React.FC = () => {
         >
           <option value="en">English</option>
           <option value="fr">Français</option>
+          <option value="vi">Tiếng Việt</option>
         </select>
       </div>
     </div>

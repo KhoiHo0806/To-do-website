@@ -1,6 +1,18 @@
 {
   "alert": {
-    "welcomeText": "Bienvenue de nouveau !",
-    "logoutText": "Déconnexion réussie"
+    "welcomeText": "Bon retour!",
+    "logoutText": "Déconnexion réussie",
+    "itemAdded": "Élément ajouté",
+    "itemDeleted": "Élément supprimé"
+  },
+  "button": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "addTodo": "Ajouter Todo"
+  },
+  "label": {
+    "createItem": "Créer un élément Todo",
+    "itemDescription": "Description de l'élément",
+    "enterTodoItem": "Entrez votre tâche à faire"
   }
 }

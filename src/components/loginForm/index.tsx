@@ -45,9 +45,9 @@ const LoginForm = () => {
           user: userInfo,
         };
         localStorage.setItem("authData", JSON.stringify(data));
-       
-          const welcomeMessage = `${t("alert.welcomeText")}, ${userInfo.username}`;
-          dispatch(setUser({ userInfo: data.user, welcomeMessage }));
+
+        const welcomeMessage = `${t("alert.welcomeText")}, ${userInfo.username}`;
+        dispatch(setUser({ userInfo: data.user, welcomeMessage }));
 
         navigate("/todo");
       }

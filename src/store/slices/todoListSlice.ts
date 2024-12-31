@@ -19,22 +19,22 @@ const todoListSlice = createSlice({
   name: "todoList",
   initialState,
   reducers: {
-    addItem(state, action: PayloadAction<{ todoItem: TodoItemState }>) {
+    addItem(state, action: PayloadAction<{ todoItem: TodoItemState, message:string }>) {
       state.todoList.push(action.payload.todoItem);
-      toast.success("Item added!", {
+      toast.success(action.payload.message, {
         duration: 1500,
         className: "bg-cyan-500 text-white p-4 rounded-md shadow-lg",
       });
     },
 
-    removeItem(state, action: PayloadAction<{ todoItem: TodoItemState }>) {
+    removeItem(state, action: PayloadAction<{ todoItem: TodoItemState, message:string }>) {
       const index = state.todoList.findIndex(
         (item) => item.id === action.payload.todoItem.id,
       );
       if (index !== -1) {
         state.todoList.splice(index, 1);
       }
-      toast("Item deleted!", {
+      toast(action.payload.message, {
         duration: 1500,
         className: "bg-red-500 text-white p-4 rounded-md shadow-lg",
       });

@@ -1,6 +1,18 @@
 {
   "alert": {
-    "welcomeText": "Chào mừng bạn trở lại!",
-    "logoutText": "Đăng xuất thành công"
+    "welcomeText": "Chào mừng trở lại!",
+    "logoutText": "Đăng xuất thành công",
+    "itemAdded": "Đã thêm mục",
+    "itemDeleted": "Đã xóa mục"
+  },
+  "button": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "addTodo": "Thêm Todo"
+  },
+  "label": {
+    "createItem": "Tạo mục Todo",
+    "itemDescription": "Mô tả mục",
+    "enterTodoItem": "Nhập mục cần làm của bạn"
   }
 }
