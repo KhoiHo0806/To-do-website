@@ -1,15 +1,15 @@
 import { TodoItemState } from "@store/slices/todoListSlice";
 import { removeItem, updateTodoItem } from "@store/slices/todoListSlice";
 import { RootState } from "@store/store";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
 import clsx from "clsx";
 
 type TodoListProps = {
-  filterString: string,
-  searchString: string
+  filterString: string;
+  searchString: string;
 };
 
 const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
@@ -19,14 +19,6 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
     ? JSON.parse(todoListLocalStorage)
     : [];
 
-  const fileredTodoList = todoList.filter((item) => {
-    if (filterString === "finished" ) {
-      return item.isFinished;
-    }
-    return true;
-  });
-  console.log(filterString);
-
   const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
 
   const itemEditRef = useRef<HTMLSpanElement | null>(null);
@@ -34,12 +26,31 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
+  //   auto focus on description when click edit
   useEffect(() => {
     if (editTingItemID && itemEditRef.current) {
       itemEditRef.current.focus();
     }
   }, [editTingItemID]);
 
+    // filter function
+    const fileredTodoList = useMemo(() => {
+      console.log("list rerendered"); // Log for testing
+      return todoList.filter((item) => {
+        const matchSearch = item.description.includes(searchString);
+        const matchFilter = filterString === "finished" ? item.isFinished : true;
+        return matchSearch && matchFilter;
+      });
+    }, [todoList, searchString, filterString]);
+
+//   const fileredTodoList = todoList.filter((item) => {
+//     console.log("list rerendered")
+//     const matchSearch = item.description.includes(searchString);
+//     const matchFilter = filterString === "finished" ? item.isFinished : true;
+//     return matchSearch && matchFilter;
+//   });
+
+  //   update list
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
@@ -49,11 +60,13 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
     dispatch(updateTodoItem({ todoItem: updateItem }));
   };
 
+  //   toggle checkbox
   const itemCheckboxToggler = (item: TodoItemState) => {
     const updatedItem = { ...item, isFinished: !item.isFinished };
     updateTodoListHandler(updatedItem);
   };
 
+  //   edit item
   const itemEditHandler = (item: TodoItemState, newDescription: string) => {
     const updatedItem = { ...item, description: newDescription };
     updateTodoListHandler(updatedItem);
@@ -64,6 +77,7 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
     });
   };
 
+  // remove item
   const removeItemHandler = (item: TodoItemState) => {
     toast(t("label.areYouSure"), {
       duration: Infinity,
@@ -97,6 +111,7 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
     });
   };
 
+  //   click out side or press Enter to finsh editing
   const handleKeyDown = (
     item: TodoItemState,
     event: React.KeyboardEvent<HTMLSpanElement>
@@ -168,7 +183,7 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
         })
       ) : (
         <p className="text-cyan-500 flex items-center justify-center">
-          {filterString !== "all"
+          {filterString !== "all" || searchString !== ""
             ? t("error.noFilteredItemsFound")
             : t("label.letAddSomeTodo")}
         </p>
@@ -177,4 +192,5 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
   );
 };
 
+// export default memo(TodoList);
 export default TodoList;

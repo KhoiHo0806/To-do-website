@@ -7,6 +7,7 @@ const Todo = () => {
   const { t } = useTranslation();
   const [filterString, setFilterString] = useState<string>("all");
   const [searchString, setSearchString] = useState<string>("");
+  const [count, setCount] = useState<number>(0);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterString(e.target.value);
@@ -15,6 +16,20 @@ const Todo = () => {
   const handlerSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchString(e.target.value);
   };
+
+  // test counter
+  const increment = () => {
+    setCount((prevCount) => prevCount + 1);
+  };
+
+  const decrement = () => {
+    setCount((prevCount) => prevCount - 1);
+  };
+
+  const reset = () => {
+    setCount(0);
+  };
+
 
   return (
     <div className="flex flex-col gap-4 px-4 sm:px-8 md:px-16 lg:px-64 py-4 sm:py-8 md:py-12 overflow-hidden">
@@ -68,6 +83,30 @@ const Todo = () => {
       </div>
 
       <TodoList filterString={filterString} searchString={searchString} />
+      {/* test counter */}
+      <div className="flex flex-col items-center p-4">
+      <h1 className="text-xl font-bold mb-4">Counter: {count}</h1>
+      <div className="flex gap-4">
+        <button
+          onClick={increment}
+          className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
+        >
+          Increment
+        </button>
+        <button
+          onClick={decrement}
+          className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
+        >
+          Decrement
+        </button>
+        <button
+          onClick={reset}
+          className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
     </div>
   );
 };
