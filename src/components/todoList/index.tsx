@@ -154,6 +154,7 @@ const TodoList: React.FC<TodoListProps> = ({
                   className="w-5 h-5 text-cyan-500 border-gray-300 rounded focus:ring-cyan-400"
                   checked={item.isFinished}
                   onChange={() => itemCheckboxToggler(item)}
+                  draggable="true"
                 />
                 {item.id === editTingItemID ? (
                   <span
