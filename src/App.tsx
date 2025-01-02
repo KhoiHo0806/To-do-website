@@ -17,29 +17,11 @@ function App() {
           {/* Public Routes */}
           <Route index element={<Intro />} />
           <Route path="/login" element={<LoginForm />} />
-
-          {/* Private Routes */}
-          {/* <Route
-            path="/todo"
-            element={
-              <PrivateRoutes>
-                <Todo />
-              </PrivateRoutes>
-            }
-          />
-          <Route
-            path="/createTodo"
-            element={
-              <PrivateRoutes>
-                <CreateTodo />
-              </PrivateRoutes>
-            }
-          /> */}
+          {/* private route */}
           <Route element={<PrivateRoutes />}>
             <Route path="/todo" element={<Todo />} />
             <Route path="/createTodo" element={<CreateTodo />} />
           </Route>
-
           {/* 404 Route */}
           <Route path="*" element={<PageNotFound />} />
         </Route>

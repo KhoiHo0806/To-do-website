@@ -24,7 +24,6 @@ const TodoList: React.FC<TodoListProps> = ({
   const parsedTodoListLocalStorage = todoListLocalStorage
     ? JSON.parse(todoListLocalStorage)
     : [];
-const debouncedSearchString = useDebounce(searchString,300);
 
   const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
 
@@ -45,15 +44,15 @@ const debouncedSearchString = useDebounce(searchString,300);
   const fileredTodoList = useMemo(() => {
     console.log("list rerendered"); // Log for testing
     return todoList.filter((item) => {
-      const matchSearch = item.description.toLocaleLowerCase().includes(debouncedSearchString.toLocaleLowerCase());
+      const matchSearch = item.description.toLocaleLowerCase().includes(searchString.toLocaleLowerCase());
       const matchFilter = filterString === "finished" ? item.isFinished : true;
       return matchSearch && matchFilter;
     });
-  }, [todoList, debouncedSearchString, filterString]);
+  }, [todoList, searchString, filterString]);
 
   //   const fileredTodoList = todoList.filter((item) => {
   //     console.log("list rerendered")
-  //     const matchSearch = item.description.includes(debouncedSearchString);
+  //     const matchSearch = item.description.includes(searchString);
   //     const matchFilter = filterString === "finished" ? item.isFinished : true;
   //     return matchSearch && matchFilter;
   //   });
