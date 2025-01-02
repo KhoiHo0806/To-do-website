@@ -12,7 +12,7 @@ const CreateTodo = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const existingList = localStorage.getItem("todoItemList");
   const todoListLocalStorage = existingList ? JSON.parse(existingList) : [];
@@ -30,14 +30,15 @@ const CreateTodo = () => {
     if (errorMessage) {
       setErrorMessage(t("error.emptyDescription"));
     }
-  }, [i18n.language, description, t]);
+    console.log("error message adjusted");
+  }, [t]);
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (description === "") {
       setErrorMessage(t("error.emptyDescription"));
-      return
+      return;
     }
 
     const todoItem = {
