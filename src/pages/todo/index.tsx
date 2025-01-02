@@ -5,18 +5,22 @@ import { Link } from "react-router-dom";
 
 const Todo = () => {
   const { t } = useTranslation();
-  const testProp: string = "test";
   const [filterString, setFilterString] = useState<string>("all");
+  const [searchString, setSearchString] = useState<string>("");
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterString(e.target.value);
   };
 
+  const handlerSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchString(e.target.value);
+  };
+
   return (
-    <div className="flex flex-col gap-2 px-2 lg:px-64 md:px-40 sm:px-24 py-4 sm:py-12 md:py-16 overflow-hidden">
-      <div className="flex justify-between mt-6">
-        <div className="flex justify-between items-center">
-          <label htmlFor="filter" className="text-sm mr-2">
+    <div className="flex flex-col gap-4 px-4 sm:px-8 md:px-16 lg:px-64 py-4 sm:py-8 md:py-12 overflow-hidden">
+      <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+          <label htmlFor="filter" className="text-sm">
             {t("label.filter")}
           </label>
           <select
@@ -29,13 +33,41 @@ const Todo = () => {
             <option value="finished">{t("label.finished")}</option>
           </select>
         </div>
+
+        <div className="flex justify-center py-4 sm:py-0 w-full sm:w-auto">
+          <div className="relative w-full max-w-xs">
+            <input
+              type="text"
+              value={searchString}
+              onChange={handlerSearchChange}
+              placeholder="Search..."
+              className="w-full px-3 py-1 text-sm text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            />
+            <button className="absolute top-1/2 right-2 transform -translate-y-1/2 text-gray-500">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M13.293 12.293a7.5 7.5 0 111.414-1.414 8.955 8.955 0 001.517 1.416A9.958 9.958 0 1013.293 12.293zM14.5 7.5a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
         <Link to="/createTodo">
           <button className="px-4 py-2 text-white bg-cyan-500 rounded-lg shadow hover:bg-cyan-600 focus:ring focus:ring-cyan-300 transition-colors duration-300">
             {t("button.addTodo")}
           </button>
         </Link>
       </div>
-      <TodoList filterString={filterString} />
+
+      <TodoList filterString={filterString} searchString={searchString} />
     </div>
   );
 };

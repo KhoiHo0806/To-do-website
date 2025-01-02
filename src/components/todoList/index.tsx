@@ -8,10 +8,11 @@ import { toast } from "sonner";
 import clsx from "clsx";
 
 type TodoListProps = {
-  filterString: string;
+  filterString: string,
+  searchString: string
 };
 
-const TodoList: React.FC<TodoListProps> = ({ filterString }) => {
+const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
   const todoList = useSelector((state: RootState) => state.todoList.todoList);
   const todoListLocalStorage = localStorage.getItem("todoItemList");
   const parsedTodoListLocalStorage = todoListLocalStorage
@@ -19,7 +20,7 @@ const TodoList: React.FC<TodoListProps> = ({ filterString }) => {
     : [];
 
   const fileredTodoList = todoList.filter((item) => {
-    if (filterString === "finished") {
+    if (filterString === "finished" ) {
       return item.isFinished;
     }
     return true;
