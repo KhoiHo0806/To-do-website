@@ -21,5 +21,8 @@
     "enterTodoItem": "Entrez votre tâche à faire",
     "letAddSomeTodo": "Ajoutons quelques tâches",
     "areYouSure": "Êtes-vous sûr?"
+  },
+  "error": {
+    "emptyDescription": "La description ne peut pas être vide"
   }
 }

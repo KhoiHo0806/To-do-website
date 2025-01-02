@@ -20,6 +20,9 @@
     "itemDescription": "Item Description",
     "enterTodoItem": "Enter your to do item",
     "letAddSomeTodo": "Let's add some to do",
-    "areYouSure" : "Are you sure?"
+    "areYouSure": "Are you sure?"
+  },
+  "error": {
+    "emptyDescription": "Description can not be empty"
   }
 }

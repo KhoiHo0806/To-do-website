@@ -1,6 +1,6 @@
 import { TodoItemState } from "@store/slices/todoListSlice";
 import { addItem } from "@store/slices/todoListSlice";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ const CreateTodo = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const existingList = localStorage.getItem("todoItemList");
   const todoListLocalStorage = existingList ? JSON.parse(existingList) : [];
@@ -26,12 +26,20 @@ const CreateTodo = () => {
     return id;
   }
 
+  useEffect(() => {
+    if (errorMessage) {
+      setErrorMessage(t("error.emptyDescription"));
+    }
+  }, [i18n.language, description, t]);
+
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (description === "") {
-      setErrorMessage("Description cannot be empty!");
-      return;
+      setErrorMessage(t("error.emptyDescription"));
+      return
     }
+
     const todoItem = {
       id: generateUniqueId(todoListLocalStorage),
       description: description,

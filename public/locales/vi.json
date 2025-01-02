@@ -21,5 +21,8 @@
     "enterTodoItem": "Nhập mục cần làm của bạn",
     "letAddSomeTodo": "Hãy thêm một vài mục cần làm",
     "areYouSure": "Bạn có chắc không?"
-  }
+  },
+  "error": {
+    "emptyDescription": "Mô tả không được để trống"
+  } 
 }
