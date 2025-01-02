@@ -6,6 +6,7 @@ import { useState, useRef, useEffect, useMemo, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
+import useDebounce from "@customHooks/useDebounce";
 
 type TodoListProps = {
   filterString: string;
@@ -23,6 +24,7 @@ const TodoList: React.FC<TodoListProps> = ({
   const parsedTodoListLocalStorage = todoListLocalStorage
     ? JSON.parse(todoListLocalStorage)
     : [];
+const debouncedSearchString = useDebounce(searchString,300);
 
   const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
 
@@ -43,15 +45,15 @@ const TodoList: React.FC<TodoListProps> = ({
   const fileredTodoList = useMemo(() => {
     console.log("list rerendered"); // Log for testing
     return todoList.filter((item) => {
-      const matchSearch = item.description.includes(searchString);
+      const matchSearch = item.description.toLocaleLowerCase().includes(debouncedSearchString.toLocaleLowerCase());
       const matchFilter = filterString === "finished" ? item.isFinished : true;
       return matchSearch && matchFilter;
     });
-  }, [todoList, searchString, filterString]);
+  }, [todoList, debouncedSearchString, filterString]);
 
   //   const fileredTodoList = todoList.filter((item) => {
   //     console.log("list rerendered")
-  //     const matchSearch = item.description.includes(searchString);
+  //     const matchSearch = item.description.includes(debouncedSearchString);
   //     const matchFilter = filterString === "finished" ? item.isFinished : true;
   //     return matchSearch && matchFilter;
   //   });

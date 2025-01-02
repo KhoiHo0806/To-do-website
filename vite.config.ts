@@ -19,6 +19,7 @@ export default defineConfig({
       "@configs": path.resolve(__dirname, "./src/config.ts"),
       "@store": path.resolve(__dirname, "./src/store"),
       "@protected": path.resolve(__dirname, "./src/protected"),
+      "@customHooks": path.resolve(__dirname, "./src/customHooks")
     },
   },
 });

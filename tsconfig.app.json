@@ -30,7 +30,8 @@
       "@hooks/*": ["hooks/*"],
       "@configs": ["config.ts"],
       "@store/*": ["store/*"],
-      "@protected/*": ["protected/*"]
+      "@protected/*": ["protected/*"],
+      "@customHooks/*":["customHooks/*"]
     }
   },
   "include": ["src"]
