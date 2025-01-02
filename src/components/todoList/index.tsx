@@ -1,18 +1,23 @@
 import { TodoItemState } from "@store/slices/todoListSlice";
 import { removeItem, updateTodoItem } from "@store/slices/todoListSlice";
 import { RootState } from "@store/store";
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import clsx from "clsx";
+import { useState, useRef, useEffect, useMemo, memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
-import clsx from "clsx";
 
 type TodoListProps = {
   filterString: string;
   searchString: string;
+  testFunction: () => void;
 };
 
-const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
+const TodoList: React.FC<TodoListProps> = ({
+  filterString,
+  searchString,
+  testFunction,
+}) => {
   const todoList = useSelector((state: RootState) => state.todoList.todoList);
   const todoListLocalStorage = localStorage.getItem("todoItemList");
   const parsedTodoListLocalStorage = todoListLocalStorage
@@ -32,29 +37,30 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
       itemEditRef.current.focus();
     }
   }, [editTingItemID]);
+  console.log("component rerendered");
 
-    // filter function
-    const fileredTodoList = useMemo(() => {
-      console.log("list rerendered"); // Log for testing
-      return todoList.filter((item) => {
-        const matchSearch = item.description.includes(searchString);
-        const matchFilter = filterString === "finished" ? item.isFinished : true;
-        return matchSearch && matchFilter;
-      });
-    }, [todoList, searchString, filterString]);
+  // filter function
+  const fileredTodoList = useMemo(() => {
+    console.log("list rerendered"); // Log for testing
+    return todoList.filter((item) => {
+      const matchSearch = item.description.includes(searchString);
+      const matchFilter = filterString === "finished" ? item.isFinished : true;
+      return matchSearch && matchFilter;
+    });
+  }, [todoList, searchString, filterString]);
 
-//   const fileredTodoList = todoList.filter((item) => {
-//     console.log("list rerendered")
-//     const matchSearch = item.description.includes(searchString);
-//     const matchFilter = filterString === "finished" ? item.isFinished : true;
-//     return matchSearch && matchFilter;
-//   });
+  //   const fileredTodoList = todoList.filter((item) => {
+  //     console.log("list rerendered")
+  //     const matchSearch = item.description.includes(searchString);
+  //     const matchFilter = filterString === "finished" ? item.isFinished : true;
+  //     return matchSearch && matchFilter;
+  //   });
 
   //   update list
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem
+        todoItem.id === updateItem.id ? updateItem : todoItem,
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -68,6 +74,10 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
 
   //   edit item
   const itemEditHandler = (item: TodoItemState, newDescription: string) => {
+    if (newDescription === item.description) {
+      setEditTingItemID(null);
+      return;
+    }
     const updatedItem = { ...item, description: newDescription };
     updateTodoListHandler(updatedItem);
     setEditTingItemID(null);
@@ -86,11 +96,11 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
           onClick={() => {
             toast.dismiss();
             const updatedList = parsedTodoListLocalStorage.filter(
-              (todoItem: TodoItemState) => todoItem.id !== item.id
+              (todoItem: TodoItemState) => todoItem.id !== item.id,
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
             dispatch(
-              removeItem({ todoItem: item, message: t("alert.itemDeleted") })
+              removeItem({ todoItem: item, message: t("alert.itemDeleted") }),
             );
           }}
           className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
@@ -114,7 +124,7 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
   //   click out side or press Enter to finsh editing
   const handleKeyDown = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>
+    event: React.KeyboardEvent<HTMLSpanElement>,
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
@@ -131,9 +141,10 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
             <div
               className={clsx(
                 "border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out sm:flex-col sm:items-start ",
-                { "bg-emerald-300": item.isFinished }
+                { "bg-emerald-300": item.isFinished },
               )}
               key={item.id}
+              onClick={testFunction}
             >
               {/* Checkbox and Task */}
               <div className="flex items-center gap-4 sm:w-full">
@@ -192,5 +203,5 @@ const TodoList: React.FC<TodoListProps> = ({ filterString, searchString }) => {
   );
 };
 
-// export default memo(TodoList);
-export default TodoList;
+export default memo(TodoList);
+// export default TodoList;

@@ -1,5 +1,5 @@
 import TodoList from "@components/todoList";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -29,7 +29,9 @@ const Todo = () => {
   const reset = () => {
     setCount(0);
   };
-
+  const testFunction = useCallback(() => {
+    console.log("todo page function run");
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 px-4 sm:px-8 md:px-16 lg:px-64 py-4 sm:py-8 md:py-12 overflow-hidden">
@@ -82,31 +84,36 @@ const Todo = () => {
         </Link>
       </div>
 
-      <TodoList filterString={filterString} searchString={searchString} />
+      <TodoList
+        filterString={filterString}
+        searchString={searchString}
+        testFunction={testFunction}
+      />
+
       {/* test counter */}
       <div className="flex flex-col items-center p-4">
-      <h1 className="text-xl font-bold mb-4">Counter: {count}</h1>
-      <div className="flex gap-4">
-        <button
-          onClick={increment}
-          className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
-        >
-          Increment
-        </button>
-        <button
-          onClick={decrement}
-          className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
-        >
-          Decrement
-        </button>
-        <button
-          onClick={reset}
-          className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-        >
-          Reset
-        </button>
+        <h1 className="text-xl font-bold mb-4">Counter: {count}</h1>
+        <div className="flex gap-4">
+          <button
+            onClick={increment}
+            className="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
+          >
+            Increment
+          </button>
+          <button
+            onClick={decrement}
+            className="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600"
+          >
+            Decrement
+          </button>
+          <button
+            onClick={reset}
+            className="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+          >
+            Reset
+          </button>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
