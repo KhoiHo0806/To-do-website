@@ -5,18 +5,26 @@ import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "sonner";
+import clsx from "clsx";
 
 type TodoListProps = {
-  testProp: string;
+  filterString: string;
 };
 
-const TodoList: React.FC<TodoListProps> = ({ testProp }) => {
+const TodoList: React.FC<TodoListProps> = ({ filterString }) => {
   const todoList = useSelector((state: RootState) => state.todoList.todoList);
   const todoListLocalStorage = localStorage.getItem("todoItemList");
   const parsedTodoListLocalStorage = todoListLocalStorage
     ? JSON.parse(todoListLocalStorage)
     : [];
-  console.log(testProp);
+
+  const fileredTodoList = todoList.filter((item) => {
+    if (filterString === "finished") {
+      return item.isFinished;
+    }
+    return true;
+  });
+  console.log(filterString);
 
   const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
 
@@ -34,7 +42,7 @@ const TodoList: React.FC<TodoListProps> = ({ testProp }) => {
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem,
+        todoItem.id === updateItem.id ? updateItem : todoItem
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -63,11 +71,11 @@ const TodoList: React.FC<TodoListProps> = ({ testProp }) => {
           onClick={() => {
             toast.dismiss();
             const updatedList = parsedTodoListLocalStorage.filter(
-              (todoItem: TodoItemState) => todoItem.id !== item.id,
+              (todoItem: TodoItemState) => todoItem.id !== item.id
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
             dispatch(
-              removeItem({ todoItem: item, message: t("alert.itemDeleted") }),
+              removeItem({ todoItem: item, message: t("alert.itemDeleted") })
             );
           }}
           className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
@@ -90,7 +98,7 @@ const TodoList: React.FC<TodoListProps> = ({ testProp }) => {
 
   const handleKeyDown = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>,
+    event: React.KeyboardEvent<HTMLSpanElement>
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
@@ -101,11 +109,14 @@ const TodoList: React.FC<TodoListProps> = ({ testProp }) => {
 
   return (
     <div className="flex flex-col flex-1 gap-2 overflow-y-auto">
-      {todoList.length >= 1 ? (
-        todoList.map((item) => {
+      {fileredTodoList.length >= 1 ? (
+        fileredTodoList.map((item) => {
           return (
             <div
-              className="border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 sm:flex-col sm:items-start"
+              className={clsx(
+                "border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out sm:flex-col sm:items-start ",
+                { "bg-emerald-300": item.isFinished }
+              )}
               key={item.id}
             >
               {/* Checkbox and Task */}
@@ -156,7 +167,9 @@ const TodoList: React.FC<TodoListProps> = ({ testProp }) => {
         })
       ) : (
         <p className="text-cyan-500 flex items-center justify-center">
-          {t("label.letAddSomeTodo")}
+          {filterString !== "all"
+            ? t("error.noFilteredItemsFound")
+            : t("label.letAddSomeTodo")}
         </p>
       )}
     </div>

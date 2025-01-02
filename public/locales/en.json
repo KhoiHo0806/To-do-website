@@ -20,9 +20,14 @@
     "itemDescription": "Item Description",
     "enterTodoItem": "Enter your to do item",
     "letAddSomeTodo": "Let's add some to do",
-    "areYouSure": "Are you sure?"
+    "areYouSure": "Are you sure?",
+    "filter": "Filter",
+    "all": "All",
+    "finished": "Finished"
   },
   "error": {
-    "emptyDescription": "Description can not be empty"
+    "emptyDescription": "Description can not be empty",
+    "noFilteredItemsFound": "No filtered items found"
   }
+
 }

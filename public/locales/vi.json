@@ -20,9 +20,13 @@
     "itemDescription": "Mô tả mục",
     "enterTodoItem": "Nhập mục cần làm của bạn",
     "letAddSomeTodo": "Hãy thêm một vài mục cần làm",
-    "areYouSure": "Bạn có chắc không?"
+    "areYouSure": "Bạn có chắc không?",
+    "filter": "Lọc",
+    "all": "Tất cả",
+    "finished": "Đã hoàn thành"
   },
   "error": {
-    "emptyDescription": "Mô tả không được để trống"
-  } 
+    "emptyDescription": "Mô tả không được để trống",
+    "noFilteredItemsFound": "Không có mục đã lọc nào"
+  }
 }
