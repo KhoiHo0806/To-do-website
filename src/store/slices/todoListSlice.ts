@@ -55,11 +55,12 @@ const todoListSlice = createSlice({
       }
     },
 
-    updateTodoList(state, action: PayloadAction<{newList: TodoItemState[]}>){
-      state.todoList = action.payload.newList
-    }
+    updateTodoList(state, action: PayloadAction<{ newList: TodoItemState[] }>) {
+      state.todoList = action.payload.newList;
+    },
   },
 });
 
-export const { addItem, removeItem, updateTodoItem, updateTodoList } = todoListSlice.actions;
+export const { addItem, removeItem, updateTodoItem, updateTodoList } =
+  todoListSlice.actions;
 export default todoListSlice.reducer;

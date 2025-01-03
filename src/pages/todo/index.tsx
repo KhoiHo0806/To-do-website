@@ -1,8 +1,8 @@
 import TodoList from "@components/todoList";
+import useDebounce from "@customHooks/useDebounce";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import useDebounce from "@customHooks/useDebounce";
 
 const Todo = () => {
   const { t } = useTranslation();
@@ -10,7 +10,7 @@ const Todo = () => {
   const [searchString, setSearchString] = useState<string>("");
   const [count, setCount] = useState<number>(0);
 
-  const debouncedSearchString = useDebounce(searchString,300)
+  const debouncedSearchString = useDebounce(searchString, 300);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterString(e.target.value);

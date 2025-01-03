@@ -55,7 +55,6 @@ const TodoList: React.FC<TodoListProps> = ({
   } | null>(null);
 
   const itemEditRef = useRef<HTMLSpanElement | null>(null);
-  const itemIDRef = useRef<string | null>(null);
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -72,7 +71,7 @@ const TodoList: React.FC<TodoListProps> = ({
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem
+        todoItem.id === updateItem.id ? updateItem : todoItem,
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -108,11 +107,11 @@ const TodoList: React.FC<TodoListProps> = ({
           onClick={() => {
             toast.dismiss();
             const updatedList = parsedTodoListLocalStorage.filter(
-              (todoItem: TodoItemState) => todoItem.id !== item.id
+              (todoItem: TodoItemState) => todoItem.id !== item.id,
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
             dispatch(
-              removeItem({ todoItem: item, message: t("alert.itemDeleted") })
+              removeItem({ todoItem: item, message: t("alert.itemDeleted") }),
             );
           }}
           className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
@@ -136,7 +135,7 @@ const TodoList: React.FC<TodoListProps> = ({
   //   click out side or press Enter to finsh editing
   const keyDownHandler = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>
+    event: React.KeyboardEvent<HTMLSpanElement>,
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
@@ -147,7 +146,8 @@ const TodoList: React.FC<TodoListProps> = ({
 
   //drag and drop desktop
   const dragStartHandler = (id: string) => {
-    itemIDRef.current = id;
+    // itemIDRef.current = id;
+    setDraggingMobileItem({ id: id, x: 0, y: 0 });
   };
 
   const dragOverHandler = (e: React.DragEvent<HTMLElement>) => {
@@ -155,23 +155,31 @@ const TodoList: React.FC<TodoListProps> = ({
     e.preventDefault();
   };
 
-  const dragEndHandler = (targetID: string) => {
-    if (itemIDRef.current === null) return;
-
+  const swapItemHandler = (targetItemID: string) => {
+    if (!draggingMobileItem) return;
     const pseudoList = [...fileredTodoList];
     const dragItemIndex = pseudoList.findIndex(
-      (item) => item.id === itemIDRef.current
+      (item) => item.id === draggingMobileItem.id,
     );
+
     const targetItemIndex = pseudoList.findIndex(
-      (item) => item.id === targetID
+      (item) => item.id === targetItemID,
     );
 
-    const [dragItem] = pseudoList.splice(dragItemIndex, 1);
-    pseudoList.splice(targetItemIndex, 0, dragItem);
+    if (targetItemIndex !== -1 && dragItemIndex !== targetItemIndex) {
+      const [dragItem] = pseudoList.splice(dragItemIndex, 1);
+      pseudoList.splice(targetItemIndex, 0, dragItem);
 
-    dispatch(updateTodoList({ newList: pseudoList }));
-    localStorage.setItem("todoItemList", JSON.stringify(pseudoList));
-    itemIDRef.current = null;
+      dispatch(updateTodoList({ newList: pseudoList }));
+      localStorage.setItem("todoItemList", JSON.stringify(pseudoList));
+    }
+  };
+
+  const dragEndHandler = (targetID: string) => {
+    if (!draggingMobileItem) return;
+
+    swapItemHandler(targetID);
+    setDraggingMobileItem(null);
   };
   // drag and drop mobile
   const touchStartHandler = (e: React.TouchEvent, item: TodoItemState) => {
@@ -225,9 +233,7 @@ const TodoList: React.FC<TodoListProps> = ({
   }, [draggingMobileItem]);
 
   const touchEndHandler = (event: React.TouchEvent) => {
-    console.log("dont have dragging");
     if (!draggingMobileItem) return;
-    console.log("have dragging");
     const touch = event.changedTouches[0]; // Get the touch position (x, y)
     const touchX = touch.clientX;
     const touchY = touch.clientY;
@@ -235,24 +241,7 @@ const TodoList: React.FC<TodoListProps> = ({
     const targetItemID = findTargetItemByCoordinates(touchX, touchY);
     if (!targetItemID) return;
 
-    const pseudoList = [...fileredTodoList];
-    const dragItemIndex = pseudoList.findIndex(
-      (item) => item.id === draggingMobileItem.id
-    );
-
-    const targetItemIndex = pseudoList.findIndex(
-      (item) => item.id === targetItemID
-    );
-
-    if (targetItemIndex !== -1 && dragItemIndex !== targetItemIndex) {
-      const [dragItem] = pseudoList.splice(dragItemIndex, 1);
-      pseudoList.splice(targetItemIndex, 0, dragItem);
-
-      dispatch(updateTodoList({ newList: pseudoList }));
-      localStorage.setItem("todoItemList", JSON.stringify(pseudoList));
-    }
-    console.log("draggingMobileItem.id: " + draggingMobileItem.id);
-    console.log("targetItemID: " + targetItemID);
+    swapItemHandler(targetItemID);
     setDraggingMobileItem(null);
   };
 
@@ -262,7 +251,7 @@ const TodoList: React.FC<TodoListProps> = ({
 
     const listItems = document.querySelectorAll(".todo-item"); // Adjust the class based on your item structure
 
-    for (let item of listItems) {
+    for (const item of listItems) {
       const rect = item.getBoundingClientRect(); // Get the item's position and size
 
       // Check if the touch position is inside the item's bounding box
@@ -287,7 +276,7 @@ const TodoList: React.FC<TodoListProps> = ({
             <div
               className={clsx(
                 "todo-item border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out sm:flex-col sm:items-start ",
-                { "bg-emerald-300": item.isFinished }
+                { "bg-emerald-300": item.isFinished },
               )}
               key={item.id}
               id={`item-${item.id}`}
