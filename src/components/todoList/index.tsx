@@ -1,5 +1,5 @@
 import { TodoItemState } from "@store/slices/todoListSlice";
-import { removeItem, updateTodoItem } from "@store/slices/todoListSlice";
+import { removeItem, updateTodoItem, updateTodoList } from "@store/slices/todoListSlice";
 import { RootState } from "@store/store";
 import clsx from "clsx";
 import { useState, useRef, useEffect, useMemo, memo } from "react";
@@ -25,26 +25,13 @@ const TodoList: React.FC<TodoListProps> = ({
     ? JSON.parse(todoListLocalStorage)
     : [];
 
-  const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
-
-  const itemEditRef = useRef<HTMLSpanElement | null>(null);
-
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-
-  //   auto focus on description when click edit
-  useEffect(() => {
-    if (editTingItemID && itemEditRef.current) {
-      itemEditRef.current.focus();
-    }
-  }, [editTingItemID]);
-  console.log("component rerendered");
-
   // filter function
   const fileredTodoList = useMemo(() => {
     console.log("list rerendered"); // Log for testing
     return todoList.filter((item) => {
-      const matchSearch = item.description.toLocaleLowerCase().includes(searchString.toLocaleLowerCase());
+      const matchSearch = item.description
+        .toLocaleLowerCase()
+        .includes(searchString.toLocaleLowerCase());
       const matchFilter = filterString === "finished" ? item.isFinished : true;
       return matchSearch && matchFilter;
     });
@@ -57,11 +44,33 @@ const TodoList: React.FC<TodoListProps> = ({
   //     return matchSearch && matchFilter;
   //   });
 
+  const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
+  const [draggableList, setDraggableList] =
+    useState<TodoItemState[]>(fileredTodoList);
+
+  const itemEditRef = useRef<HTMLSpanElement | null>(null);
+  const itemIDRef = useRef<string | null>(null);
+
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
+  //   auto focus on description when click edit
+  useEffect(() => {
+    if (editTingItemID && itemEditRef.current) {
+      itemEditRef.current.focus();
+    }
+  }, [editTingItemID]);
+  console.log("component rerendered");
+
+  useEffect(() => {
+    setDraggableList(fileredTodoList);
+  }, [fileredTodoList]);
+
   //   update list
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem,
+        todoItem.id === updateItem.id ? updateItem : todoItem
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -97,11 +106,11 @@ const TodoList: React.FC<TodoListProps> = ({
           onClick={() => {
             toast.dismiss();
             const updatedList = parsedTodoListLocalStorage.filter(
-              (todoItem: TodoItemState) => todoItem.id !== item.id,
+              (todoItem: TodoItemState) => todoItem.id !== item.id
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
             dispatch(
-              removeItem({ todoItem: item, message: t("alert.itemDeleted") }),
+              removeItem({ todoItem: item, message: t("alert.itemDeleted") })
             );
           }}
           className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
@@ -123,15 +132,47 @@ const TodoList: React.FC<TodoListProps> = ({
   };
 
   //   click out side or press Enter to finsh editing
-  const handleKeyDown = (
+  const keyDownHandler = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>,
+    event: React.KeyboardEvent<HTMLSpanElement>
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
       const newDescription = event.currentTarget.textContent || "";
       itemEditHandler(item, newDescription);
     }
+  };
+
+  //drag and drop
+  const dragStartHandler = (id: string) => {
+    itemIDRef.current = id;
+  };
+
+  const dragOverHandler = (e: React.DragEvent<HTMLElement>) => {
+    //allow drop
+    e.preventDefault();
+  };
+
+  const dragEndHandler = (targetID: string) => {
+    if (itemIDRef.current === null) return;
+
+    const pseudoList = [...draggableList];
+    const dragItemIndex = pseudoList.findIndex(
+      (item) => item.id === itemIDRef.current
+    );
+    const targetItemIndex = pseudoList.findIndex(
+      (item) => item.id === targetID
+    );
+
+    const [dragItem] = pseudoList.splice(dragItemIndex, 1);
+    pseudoList.splice(targetItemIndex, 0, dragItem);
+
+    setDraggableList(pseudoList);
+    dispatch(updateTodoList({newList:pseudoList}))
+    localStorage.setItem("todoItemList", JSON.stringify(pseudoList));
+    itemIDRef.current = null;
+   
+    
   };
 
   return (
@@ -142,10 +183,14 @@ const TodoList: React.FC<TodoListProps> = ({
             <div
               className={clsx(
                 "border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out sm:flex-col sm:items-start ",
-                { "bg-emerald-300": item.isFinished },
+                { "bg-emerald-300": item.isFinished }
               )}
               key={item.id}
               onClick={testFunction}
+              draggable="true"
+              onDragStart={() => dragStartHandler(item.id)}
+              onDragOver={(e) => dragOverHandler(e)}
+              onDrop={() => dragEndHandler(item.id)}
             >
               {/* Checkbox and Task */}
               <div className="flex items-center gap-4 sm:w-full">
@@ -154,7 +199,6 @@ const TodoList: React.FC<TodoListProps> = ({
                   className="w-5 h-5 text-cyan-500 border-gray-300 rounded focus:ring-cyan-400"
                   checked={item.isFinished}
                   onChange={() => itemCheckboxToggler(item)}
-                  draggable="true"
                 />
                 {item.id === editTingItemID ? (
                   <span
@@ -165,7 +209,7 @@ const TodoList: React.FC<TodoListProps> = ({
                     onBlur={(e) =>
                       itemEditHandler(item, e.currentTarget.textContent || "")
                     }
-                    onKeyDown={(e) => handleKeyDown(item, e)}
+                    onKeyDown={(e) => keyDownHandler(item, e)}
                   >
                     {item.description}
                   </span>
