@@ -71,7 +71,7 @@ const TodoList: React.FC<TodoListProps> = ({
   const updateTodoListHandler = (updateItem: TodoItemState) => {
     const updatedList = parsedTodoListLocalStorage.map(
       (todoItem: TodoItemState) =>
-        todoItem.id === updateItem.id ? updateItem : todoItem,
+        todoItem.id === updateItem.id ? updateItem : todoItem
     );
     localStorage.setItem("todoItemList", JSON.stringify(updatedList));
     dispatch(updateTodoItem({ todoItem: updateItem }));
@@ -107,11 +107,11 @@ const TodoList: React.FC<TodoListProps> = ({
           onClick={() => {
             toast.dismiss();
             const updatedList = parsedTodoListLocalStorage.filter(
-              (todoItem: TodoItemState) => todoItem.id !== item.id,
+              (todoItem: TodoItemState) => todoItem.id !== item.id
             );
             localStorage.setItem("todoItemList", JSON.stringify(updatedList));
             dispatch(
-              removeItem({ todoItem: item, message: t("alert.itemDeleted") }),
+              removeItem({ todoItem: item, message: t("alert.itemDeleted") })
             );
           }}
           className="px-3 py-1 text-white bg-red-500 rounded hover:bg-red-600 focus:ring focus:ring-red-300"
@@ -135,7 +135,7 @@ const TodoList: React.FC<TodoListProps> = ({
   //   click out side or press Enter to finsh editing
   const keyDownHandler = (
     item: TodoItemState,
-    event: React.KeyboardEvent<HTMLSpanElement>,
+    event: React.KeyboardEvent<HTMLSpanElement>
   ) => {
     if (event.key === "Enter") {
       event.preventDefault(); // Prevent default Enter behavior
@@ -159,11 +159,11 @@ const TodoList: React.FC<TodoListProps> = ({
     if (!draggingMobileItem) return;
     const pseudoList = [...fileredTodoList];
     const dragItemIndex = pseudoList.findIndex(
-      (item) => item.id === draggingMobileItem.id,
+      (item) => item.id === draggingMobileItem.id
     );
 
     const targetItemIndex = pseudoList.findIndex(
-      (item) => item.id === targetItemID,
+      (item) => item.id === targetItemID
     );
 
     if (targetItemIndex !== -1 && dragItemIndex !== targetItemIndex) {
@@ -187,21 +187,6 @@ const TodoList: React.FC<TodoListProps> = ({
     setDraggingMobileItem({ id: item.id, x: touch.clientX, y: touch.clientY });
   };
 
-  // const touchMoveHandler = (e: React.TouchEvent) => {
-
-  //   if (!draggingMobileItem) return;
-  //   e.preventDefault();
-  //   const touch = e.touches[0];
-
-  //   const deltaX = touch.clientX - draggingMobileItem.x;
-  //   const deltaY = touch.clientY - draggingMobileItem.y;
-
-  //   const element = document.getElementById(`#item-${draggingMobileItem.id}`);
-  //   if (element) {
-  //     element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-  //   }
-  // };
-
   useEffect(() => {
     const touchMoveListener = (e: TouchEvent) => {
       e.preventDefault(); // Prevent default scrolling
@@ -215,6 +200,12 @@ const TodoList: React.FC<TodoListProps> = ({
 
       const element = document.getElementById(`#item-${draggingMobileItem.id}`);
       if (element) {
+        element.classList.add(
+          "absolute",
+          "z-50",
+          "pointer-events-none",
+          "transition-none"
+        );
         element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
       }
       console.log("touch dragging");
@@ -240,7 +231,6 @@ const TodoList: React.FC<TodoListProps> = ({
 
     const targetItemID = findTargetItemByCoordinates(touchX, touchY);
     if (!targetItemID) return;
-
     swapItemHandler(targetItemID);
     setDraggingMobileItem(null);
   };
@@ -276,7 +266,7 @@ const TodoList: React.FC<TodoListProps> = ({
             <div
               className={clsx(
                 "todo-item border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out sm:flex-col sm:items-start ",
-                { "bg-emerald-300": item.isFinished },
+                { "bg-emerald-300": item.isFinished }
               )}
               key={item.id}
               id={`item-${item.id}`}
