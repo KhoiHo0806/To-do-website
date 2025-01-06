@@ -181,10 +181,22 @@ const TodoList: React.FC<TodoListProps> = ({
     swapItemHandler(targetID);
     setDraggingMobileItem(null);
   };
+
   // drag and drop mobile
   const touchStartHandler = (e: React.TouchEvent, item: TodoItemState) => {
     const touch = e.touches[0];
-    setDraggingMobileItem({ id: item.id, x: touch.clientX, y: touch.clientY });
+    const element = document.getElementById(`item-${item.id}`);
+    if (element) {
+      // Get the position of the element relative to the viewport
+      const dragTimeout = setTimeout(() => {
+        setDraggingMobileItem({
+          id: item.id,
+          x: touch.clientX,
+          y: touch.clientY,
+        });
+      }, 1000);
+      element.dataset.dragTimeout = dragTimeout.toString();
+    }
   };
 
   useEffect(() => {
@@ -195,20 +207,24 @@ const TodoList: React.FC<TodoListProps> = ({
 
       const touch = e.touches[0];
 
-      const deltaX = touch.clientX - draggingMobileItem.x;
-      const deltaY = touch.clientY - draggingMobileItem.y;
+      const deltaX = touch.clientX;
+      const deltaY = touch.clientY;
 
-      const element = document.getElementById(`#item-${draggingMobileItem.id}`);
+      const element = document.getElementById(`item-${draggingMobileItem.id}`);
       if (element) {
+        const rect = element.getBoundingClientRect();
         element.classList.add(
           "absolute",
           "z-50",
           "pointer-events-none",
-          "transition-none"
+          "transition-none",
+          "border",
+          "border-cyan-400"
         );
-        element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        // element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        element.style.top = `${deltaY - rect.height / 2}px`;
+        element.style.left = `${deltaX - rect.width / 2}px`;
       }
-      console.log("touch dragging");
     };
 
     if (draggingMobileItem) {
@@ -224,15 +240,40 @@ const TodoList: React.FC<TodoListProps> = ({
   }, [draggingMobileItem]);
 
   const touchEndHandler = (event: React.TouchEvent) => {
-    if (!draggingMobileItem) return;
     const touch = event.changedTouches[0]; // Get the touch position (x, y)
-    const touchX = touch.clientX;
-    const touchY = touch.clientY;
 
-    const targetItemID = findTargetItemByCoordinates(touchX, touchY);
-    if (!targetItemID) return;
-    swapItemHandler(targetItemID);
-    setDraggingMobileItem(null);
+    if (draggingMobileItem) {
+      const touchX = touch.clientX;
+      const touchY = touch.clientY;
+  
+      const element = document.getElementById(`item-${draggingMobileItem.id}`);
+      const targetItemID = findTargetItemByCoordinates(touchX, touchY);
+  
+      if (!targetItemID) return;
+      swapItemHandler(targetItemID);
+      setDraggingMobileItem(null);
+  
+      if (element) {
+        element.classList.remove(
+          "absolute",
+          "z-50",
+          "pointer-events-none",
+          "transition-none",
+          "border",
+          "border-cyan-400"
+        );
+        element.style.top = "initial";
+        element.style.left = "initial";
+      }
+    } else {
+      const element = event.target as HTMLElement;
+      const dragTimeout = element.dataset.dragTimeout;
+      if (dragTimeout) {
+        clearTimeout(parseInt(dragTimeout, 10));
+        delete element.dataset.dragTimeout; // Clean up
+        console.log("Timeout cleared");
+      }
+    }
   };
 
   const findTargetItemByCoordinates = (x: number, y: number) => {
