@@ -307,7 +307,7 @@ const TodoList: React.FC<TodoListProps> = ({
             <div
               className={clsx(
                 "todo-item border flex items-center justify-between p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 ease-in-out sm:flex-col sm:items-start ",
-                { "bg-emerald-300": item.isFinished }
+                { "bg-green-300": item.isFinished }
               )}
               key={item.id}
               id={`item-${item.id}`}
