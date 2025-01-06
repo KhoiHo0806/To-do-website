@@ -35,6 +35,9 @@ const Todo = () => {
   const testFunction = useCallback(() => {
     console.log("todo page function run");
   }, []);
+  // const testFunction = () => {
+  //   console.log("todo page function run");
+  // };
 
   return (
     <div className="flex flex-col gap-4 px-4 sm:px-8 md:px-16 lg:px-64 py-4 sm:py-8 md:py-12 overflow-hidden">

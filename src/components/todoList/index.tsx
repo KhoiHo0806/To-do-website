@@ -40,12 +40,12 @@ const TodoList: React.FC<TodoListProps> = ({
     });
   }, [todoList, searchString, filterString]);
 
-  //   const fileredTodoList = todoList.filter((item) => {
-  //     console.log("list rerendered")
-  //     const matchSearch = item.description.includes(searchString);
-  //     const matchFilter = filterString === "finished" ? item.isFinished : true;
-  //     return matchSearch && matchFilter;
-  //   });
+  // const fileredTodoList = todoList.filter((item) => {
+  //   console.log("list rerendered")
+  //   const matchSearch = item.description.includes(searchString);
+  //   const matchFilter = filterString === "finished" ? item.isFinished : true;
+  //   return matchSearch && matchFilter;
+  // });
 
   const [editTingItemID, setEditTingItemID] = useState<string | null>(null);
   const [draggingMobileItem, setDraggingMobileItem] = useState<{
@@ -65,7 +65,7 @@ const TodoList: React.FC<TodoListProps> = ({
       itemEditRef.current.focus();
     }
   }, [editTingItemID]);
-  console.log("component rerendered");
+  console.log("child component rerendered");
 
   //   update list
   const updateTodoListHandler = (updateItem: TodoItemState) => {
@@ -245,14 +245,14 @@ const TodoList: React.FC<TodoListProps> = ({
     if (draggingMobileItem) {
       const touchX = touch.clientX;
       const touchY = touch.clientY;
-  
+
       const element = document.getElementById(`item-${draggingMobileItem.id}`);
       const targetItemID = findTargetItemByCoordinates(touchX, touchY);
-  
+
       if (!targetItemID) return;
       swapItemHandler(targetItemID);
       setDraggingMobileItem(null);
-  
+
       if (element) {
         element.classList.remove(
           "absolute",
